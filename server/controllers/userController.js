@@ -19,7 +19,7 @@ exports.view = (req, res) => {
         console.log('Connected as ID ' + connection.threadId);
 
         // User the connection
-        connection.query('SELECT * FROM user', (err, rows) => {
+        connection.query('SELECT * FROM user WHERE status = "active" ', (err, rows) => {
             // When done with the connection, release it
             connection.release();
 
@@ -28,11 +28,30 @@ exports.view = (req, res) => {
             } else {
                 console.log(err);
             }
-
             console.log('The data from user table: \n', rows)
-
 
         });
     });
 
 }
+
+//find 
+exports.find = (req, res) => {
+    if (err) throw err;
+    console.log('Connected as ID ' + connection.threadId);
+
+    let searchTerm = req.body.search;
+
+    // User the connection
+    connection.query('SELECT * FROM user WHERE first_name LIKE ? OR last_name LIKE ?', ['%' + searchTerm + ' % '], ['%' + searchTerm + ' % '], (err, rows) => {
+        // When done with the connection, release it
+        connection.release();
+        if (!err) {
+            res.render('home', { rows });
+        } else {
+            console.log(err);
+        }
+        console.log('The data from user table: \n', rows)
+
+    });
+};

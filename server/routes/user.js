@@ -4,7 +4,7 @@ const userController = require('../controllers/userController');
 
 
 //create, find, update, delete
-router.get('/', userController.view);
+router.get('/', userController.find);
 
 
 module.exports = router;
