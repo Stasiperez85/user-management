@@ -55,3 +55,32 @@ exports.find = (req, res) => {
 
     });
 };
+
+exports.form = (req, res) => {
+    res.render('add-user');
+}
+
+//add new user
+exports.create = (req, res) => {
+    const { first_name, last_name, email, phone, commets } = req.body;
+
+    pool.getConnection((err, connection) => {
+        if (err) throw err;
+        console.log('Connected as ID ' + connection.threadId);
+        let searchTerm = req.body.search
+
+        // User the connection
+        connection.query('INSERT INTO user SET first_name = ?, last_name = ?, email = ?, phone = ?, comments = ? ', [first_name, last_name, email, phone, commets], (err, rows) => {
+            // When done with the connection, release it
+            connection.release();
+
+            if (!err) {
+                res.render('home', { rows });
+            } else {
+                console.log(err);
+            }
+            console.log('The data from user table: \n', rows)
+        });
+    });
+
+}

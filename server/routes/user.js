@@ -4,7 +4,9 @@ const userController = require('../controllers/userController');
 
 
 //create, find, update, delete
-router.get('/', userController.find);
-
+router.get('/', userController.view);
+router.post('/', userController.find);
+router.get('/adduser', userController.form);
+router.post('/adduser', userController.create);
 
 module.exports = router;
